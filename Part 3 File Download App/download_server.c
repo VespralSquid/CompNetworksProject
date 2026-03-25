@@ -15,6 +15,7 @@
 #define BUFLEN		100	/* buffer length set to 100 to meet requirements*/
 
 int echod(int);
+int getReqFile(int, char *, size_t);
 void reaper(int);
 
 int main(int argc, char **argv)

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <strings.h>
+#include <string.h>
 
 
 
@@ -79,9 +80,8 @@ int main(int argc, char **argv)
 		close(sd);
 		exit(1);
 	}
-	flag[n] = '\0';  /* Null-terminate */
 
-	if (strcmp(flag, "O\n") == 0) {
+	if (strcmp(&flag, "O\n") == 0) {
 		/* Success: create file with requested name and write contents */
 		FILE *fp = fopen(filename, "w");
 		if (fp == NULL) {
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 		}
 		fclose(fp);
 		printf("File downloaded successfully as '%s'\n", filename);
-	} else if (strcmp(flag, "E\n") == 0) {
+	} else if (strcmp(&flag, "E\n") == 0) {
 		/* Error: read and display error message */
 		while ((n = read(sd, rbuf, BUFLEN)) > 0) {
 			write(1, rbuf, n);
