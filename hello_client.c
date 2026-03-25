@@ -60,6 +60,15 @@ int main(int argc, char **argv)
 
 	printf("Waiting for message \n");
     int n = read(sd, rbuf, BUFLEN);	/* get message from server */
+    if(n < 0){
+      fprintf(stderr, "Can't read \n");
+      exit(1);
+    }
+    if(n == 0){
+      fprintf(stderr, "Server closed connection \n");
+      exit(1);
+    }
+    else
      write(1, rbuf, strlen(rbuf));	/* display message */
 	
 	close(sd);
