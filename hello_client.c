@@ -16,7 +16,7 @@
 
 int main(int argc, char **argv)
 {
-    int     n, 
+    int     n; 
 	int 	sd, port;
 	struct	hostent		*hp;
 	struct	sockaddr_in server;
