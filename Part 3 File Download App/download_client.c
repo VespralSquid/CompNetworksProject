@@ -64,11 +64,11 @@ int main(int argc, char **argv)
 		close(sd);
 		exit(1);
 	}
-	/* Remove newline from filename */
-	filename[strcspn(filename, "\n")] = 0;
-
-	/* Send filename to server */
+	/* Send filename to server (with newline from fgets) */
 	write(sd, filename, strlen(filename));
+
+	/* Remove newline from filename for local file creation */
+	filename[strcspn(filename, "\n")] = 0;
 
 	/* Read response flag */
 	char flag[10];
