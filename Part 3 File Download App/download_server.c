@@ -89,7 +89,7 @@ int echod(int sd)
 	FILE *fp = fopen(buf, "r");
 	if (fp == NULL) {
 		/* Send error flag and message to client */
-		char *error_flag = "E\n";
+		char *error_flag = "E";
 		char *error_msg = "File not found\n";
 		write(sd, error_flag, strlen(error_flag));
 		write(sd, error_msg, strlen(error_msg));
@@ -98,7 +98,7 @@ int echod(int sd)
 	}
 
 	/* Send success flag, then file contents to client */
-	char *success_flag = "O\n";
+	char *success_flag = "O";
 	write(sd, success_flag, strlen(success_flag));
 	size_t n;
 	while ((n = fread(buf, 1, BUFLEN, fp)) > 0) {
