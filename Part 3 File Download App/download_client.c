@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <strings.h>
-
+#include <string.h>
 
 
 #define SERVER_TCP_PORT 3000	/* well-known port */
-#define BUFLEN		256	/* buffer length */
+#define BUFLEN		100	/* buffer length */
 
 int main(int argc, char **argv)
 {
