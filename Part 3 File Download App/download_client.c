@@ -1,4 +1,4 @@
-/* A simple echo client using TCP */
+/* A download application client using TCP, built from echo client */
 #include <stdio.h>
 #include <netdb.h>
 #include <sys/types.h>
@@ -11,8 +11,9 @@
 #include <string.h>
 
 
+
 #define SERVER_TCP_PORT 3000	/* well-known port */
-#define BUFLEN		100	/* buffer length */
+#define BUFLEN		100	/* buffer length set to 100 to meet requirements*/
 
 int main(int argc, char **argv)
 {
@@ -58,29 +59,28 @@ int main(int argc, char **argv)
 	  exit(1);
 	}
 
-	printf("Enter filename to request: ");
+    /* Get filename from user */
+	printf("Requested filename: ");
 	if (fgets(filename, BUFLEN, stdin) == NULL) {
 		fprintf(stderr, "Error reading filename\n");
 		close(sd);
 		exit(1);
 	}
-	/* Send filename to server (with newline from fgets) */
+
+	/* Send filename to server */
+    filename[strcspn(filename, "\n")] = '\0';
 	write(sd, filename, strlen(filename));
 
-	/* Remove newline from filename for local file creation */
-	filename[strcspn(filename, "\n")] = 0;
-
 	/* Read response flag */
-	char flag[10];
-	n = read(sd, flag, sizeof(flag) - 1);
+	char flag;
+	n = read(sd, &flag, 1);
 	if (n <= 0) {
 		fprintf(stderr, "Error reading response\n");
 		close(sd);
 		exit(1);
 	}
-	flag[n] = '\0';  /* Null-terminate */
 
-	if (strcmp(flag, "OK\n") == 0) {
+	if (flag == 'O') {
 		/* Success: create file with requested name and write contents */
 		FILE *fp = fopen(filename, "w");
 		if (fp == NULL) {
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 		}
 		fclose(fp);
 		printf("File downloaded successfully as '%s'\n", filename);
-	} else if (strcmp(flag, "ERROR\n") == 0) {
+	} else if (flag == 'E') {
 		/* Error: read and display error message */
 		while ((n = read(sd, rbuf, BUFLEN)) > 0) {
 			write(1, rbuf, n);
