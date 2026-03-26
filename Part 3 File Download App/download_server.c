@@ -130,13 +130,13 @@ int getReqFile(int sd, char *fileName, size_t maxlen)
         }
     }
 
+    fileName[total] = '\0';
+    
     /* Strip newline if present */
     if (total > 0 && fileName[total - 1] == '\n') {
         fileName[total - 1] = '\0';
-        total--;
-    } else {
-        fileName[total] = '\0';
     }
+    
     return (int)total;
 }
 
