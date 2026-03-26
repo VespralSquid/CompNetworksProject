@@ -68,9 +68,11 @@ int main(int argc, char **argv)
 	}
 
 	/* Send filename to server */
-    filename[strcspn(filename, "\n")] = '\0';
 	write(sd, filename, strlen(filename));
 
+    /* remove newline from filename for local use */
+    filename[strcspn(filename, "\n")] = '\0';
+    
 	/* Read response flag */
 	char flag;
 	n = read(sd, &flag, 1);
