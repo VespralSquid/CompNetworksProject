@@ -1,4 +1,4 @@
-/* A simple echo client using TCP */
+/* A download application client using TCP, built from echo client */
 #include <stdio.h>
 #include <netdb.h>
 #include <sys/types.h>
@@ -68,9 +68,8 @@ int main(int argc, char **argv)
 	}
 
 	/* Send filename to server */
+    filename[strcspn(filename, "\n")] = '\0';
 	write(sd, filename, strlen(filename));
-
-    filename[strcspn(filename, "\n")] = '\0';  // Remove newline character from filename for local file creation
 
 	/* Read response flag */
 	char flag;
@@ -81,7 +80,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	if (strcmp(flag, "O") == 0) {
+	if (flag == 'O') {
 		/* Success: create file with requested name and write contents */
 		FILE *fp = fopen(filename, "w");
 		if (fp == NULL) {
@@ -94,7 +93,7 @@ int main(int argc, char **argv)
 		}
 		fclose(fp);
 		printf("File downloaded successfully as '%s'\n", filename);
-	} else if (strcmp(flag, "E") == 0) {
+	} else if (flag == 'E') {
 		/* Error: read and display error message */
 		while ((n = read(sd, rbuf, BUFLEN)) > 0) {
 			write(1, rbuf, n);
